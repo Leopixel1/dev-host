@@ -18,6 +18,16 @@ It features a modern web UI to manage your projects and an integrated Monaco Edi
 
 ## Installation
 
+### 1-Click Auto Install (Recommended)
+
+To automatically install dependencies, build the frontend, and run the server in the background using `pm2`, run:
+
+```bash
+./install.sh
+```
+
+### Manual Installation
+
 1. Clone this repository or download the source code.
 2. Install dependencies for both the backend and frontend:
 
@@ -31,7 +41,7 @@ cd ../frontend
 npm install
 \`\`\`
 
-## Building and Running
+## Building and Running (Manual)
 
 1. Build the React frontend. The backend is configured to serve these compiled static files.
 
