@@ -1,83 +1,115 @@
-# QuickHost
+# 🚀 QuickHost
 
 QuickHost is a lightweight, self-hosted web application that allows you to quickly create, edit, and instantly deploy websites to subdomains on your own domain.
 
-It features a modern web UI to manage your projects and an integrated Monaco Editor to modify your HTML, CSS, and JS files directly in the browser.
+Featuring a modern web UI and an integrated Monaco Editor, QuickHost lets you manage and modify your projects' HTML, CSS, and JS files directly in the browser.
 
-## Features
+---
 
-* **Instant Deployment:** Sites are served immediately on `subdomain.yourdomain.com` without build steps.
-* **In-Browser Editor:** Edit files directly using an integrated Monaco Editor (the same editor that powers VS Code).
-* **Self-Contained:** Uses an embedded SQLite database to store project metadata and file contents.
-* **Single Process:** The Node.js backend serves both the API, the dynamically hosted subdomains, and the statically built React frontend UI.
+## ✨ Features
 
-## Requirements
+*   **⚡ Instant Deployment:** Sites are served immediately on `subdomain.yourdomain.com`.
+*   **📝 In-Browser Editor:** Edit files directly using the Monaco Editor (the same engine as VS Code).
+*   **📦 Self-Contained:** Uses an embedded SQLite database for zero-config data storage.
+*   **🌐 Wildcard Subdomain Support:** Advanced routing for `*.yourdomain.com` and even `*.dev.yourdomain.com`.
+*   **🛠️ npm Support:** Easy management with root-level npm scripts.
 
-* Node.js (v18+ recommended)
-* npm
+---
 
-## Installation
+## ⚡ One-Line Install
 
-### 1-Click Auto Install (Recommended)
+Run the following command to install dependencies, build the frontend, and start QuickHost in the background using `pm2`:
 
-To automatically install dependencies, build the frontend, and run the server in the background using `pm2`, run:
+```bash
+curl -sSL https://raw.githubusercontent.com/user/quickhost/main/install.sh | bash
+```
+
+*(Note: Replace the URL with your actual repository URL if hosting elsewhere)*
+
+Or locally:
 
 ```bash
 ./install.sh
 ```
 
-### Manual Installation
+---
 
-1. Clone this repository or download the source code.
-2. Install dependencies for both the backend and frontend:
+## 🛠️ Manual Installation & Development
 
-\`\`\`bash
-# Install backend dependencies
-cd quickhost/backend
-npm install
+### Setup
 
-# Install frontend dependencies
-cd ../frontend
-npm install
-\`\`\`
+Install all dependencies for both frontend and backend:
 
-## Building and Running (Manual)
+```bash
+npm run setup
+```
 
-1. Build the React frontend. The backend is configured to serve these compiled static files.
+### Development
 
-\`\`\`bash
-cd quickhost/frontend
+Run both the backend and frontend in development mode with hot reloading:
+
+```bash
+npm run dev
+```
+
+### Production Build
+
+Build the React frontend for production:
+
+```bash
 npm run build
-\`\`\`
+```
 
-2. Start the backend server:
+Start the production server:
 
-\`\`\`bash
-cd ../backend
-node server.js
-\`\`\`
+```bash
+npm start
+```
 
-The application will be running on port 3000 by default.
+---
 
-## Usage
+## 🌐 Advanced Subdomain Configuration
 
-### Local Development / Testing
+QuickHost supports nested wildcard subdomains (e.g., `*.dev.yourdomain.com`).
 
-By default, the server runs on `localhost:3000`.
-1. Navigate to `http://localhost:3000` to access the QuickHost Dashboard.
-2. Create a new project. You will assign it a subdomain (e.g., `mysite`).
-3. You can access the site at `http://mysite.localhost:3000`. (Note: Modern browsers route `*.localhost` loopback automatically. If yours doesn't, you may need to edit your OS `hosts` file for testing).
+To configure your base domain, set the `BASE_DOMAIN` environment variable:
 
-### Production Deployment
+```bash
+# Example for dev.yourdomain.com
+export BASE_DOMAIN=dev.yourdomain.com
+npm start
+```
 
-To use this with a real domain (e.g., `*.mydomain.com`):
+### DNS Setup
+1. Create a wildcard A record: `*.yourdomain.com` -> `YOUR_SERVER_IP`
+2. (Optional) For nested subdomains: `*.dev.yourdomain.com` -> `YOUR_SERVER_IP`
 
-1. **DNS Setup:** Configure a wildcard A record (`*.mydomain.com` and `mydomain.com`) pointing to your server's IP address.
-2. **Reverse Proxy:** It is highly recommended to run QuickHost behind a reverse proxy like Nginx, Caddy, or Traefik to handle SSL/TLS termination and route traffic on ports 80/443 to the QuickHost node process on port 3000.
-3. **Security:** QuickHost currently does not have built-in authentication. When deploying to the internet, you **must** secure the root domain (where the dashboard lives) using basic authentication or an SSO proxy (like Authelia or Cloudflare Access) at your reverse proxy layer, while allowing public access to the subdomains.
+---
 
-## Architecture
+## 📦 Using npm Packages in Your Projects
 
-* **Frontend (`quickhost/frontend`):** A React SPA built with Vite, Tailwind CSS, and Lucide Icons.
-* **Backend (`quickhost/backend`):** An Express.js application using `better-sqlite3`.
-* **Routing:** The Express app features custom middleware that inspects the `Host` header. If the host is a recognized subdomain, it serves the file content from the SQLite database. Otherwise, it serves the API or the static frontend application.
+While QuickHost projects are served as static files, you can easily use npm packages via ESM CDNs like **esm.sh** or **Skypack**.
+
+**Example:**
+
+```html
+<script type="module">
+  import confetti from 'https://esm.sh/canvas-confetti';
+
+  confetti();
+</script>
+```
+
+---
+
+## 🏛️ Architecture
+
+*   **Frontend:** React SPA built with Vite, Tailwind CSS, and Lucide Icons.
+*   **Backend:** Node.js Express application using `better-sqlite3`.
+*   **Routing:** Custom middleware inspects the `Host` header to serve project files based on the extracted subdomain.
+
+---
+
+## 🔒 Security Note
+
+QuickHost currently does not have built-in authentication. It is **strongly recommended** to run it behind a reverse proxy (like Nginx, Caddy, or Traefik) and use Basic Auth or an SSO provider to protect the dashboard.

@@ -25,21 +25,28 @@ const mime = require('mime-types');
 
 // Wildcard subdomain routing
 app.use((req, res, next) => {
-  const host = req.headers.host || '';
+  const hostWithPort = req.headers.host || '';
+  const host = hostWithPort.split(':')[0];
 
-  // Very basic extraction of subdomain.
-  // If host is subdomain.localhost:3000 or subdomain.mydomain.com
-  // We assume the first part before the first dot is the subdomain.
-  // This is a naive approach for this quickhost proof-of-concept.
-  const parts = host.split('.');
+  // Get base domain from environment or default to localhost
+  const baseDomain = process.env.BASE_DOMAIN || 'localhost';
 
-  // If no subdomain (e.g., localhost:3000 or 127.0.0.1:3000), skip to next middleware (API or Frontend)
-  if (parts.length === 1 || (parts.length === 2 && parts[0] === 'localhost') || host.startsWith('127.0.0.1')) {
+  // If it's the base domain or an IP, it's the main dashboard
+  if (host === baseDomain || host === '127.0.0.1' || host === 'localhost') {
     return next();
   }
 
-  // The first part is assumed to be the subdomain
-  const subdomain = parts[0];
+  // Check if the host ends with the base domain
+  if (!host.endsWith('.' + baseDomain)) {
+    return next();
+  }
+
+  // Extract the subdomain part
+  const subdomain = host.slice(0, -(baseDomain.length + 1));
+
+  if (!subdomain) {
+    return next();
+  }
 
   try {
     // Look up the project by subdomain

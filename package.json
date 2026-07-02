@@ -1,0 +1,17 @@
+{
+  "name": "quickhost-monorepo",
+  "version": "1.0.0",
+  "description": "QuickHost - Instant Website Deployment Platform",
+  "scripts": {
+    "setup": "npm install && cd quickhost/backend && npm install && cd ../frontend && npm install",
+    "build": "cd quickhost/frontend && npm run build",
+    "start": "cd quickhost/backend && node server.js",
+    "dev:backend": "cd quickhost/backend && npx nodemon server.js",
+    "dev:frontend": "cd quickhost/frontend && npm run dev",
+    "dev": "npx concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "install-pm2": "npm install -g pm2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
