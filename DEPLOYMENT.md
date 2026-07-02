@@ -70,6 +70,17 @@ QuickHost includes a GitHub Actions workflow for automatic deployment whenever y
    sudo ./svc.sh start
    ```
 
+#### ⚠️ Running as Root
+If you need to run the runner as the `root` user, you must set the `RUNNER_ALLOW_RUNASROOT` environment variable.
+
+- **For one-time run:**
+  ```bash
+  export RUNNER_ALLOW_RUNASROOT=1
+  ./run.sh
+  ```
+- **When installing as a service:**
+  Modify the `svc.sh` or set the variable in your environment before installation.
+
 ### 2. How it Works
 The `.github/workflows/deploy.yml` file is already configured. When you push to `main`, the runner will:
 1. Pull the latest code.
