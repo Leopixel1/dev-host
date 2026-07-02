@@ -24,7 +24,6 @@ Run the following command to install dependencies, build the frontend, and start
 curl -sSL https://raw.githubusercontent.com/Leopixel1/dev-host/refs/heads/main/install.sh | bash
 ```
 
-*(Note: Replace the URL with your actual repository URL if hosting elsewhere)*
 
 Or locally:
 
