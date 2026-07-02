@@ -21,7 +21,7 @@ Featuring a modern web UI and an integrated Monaco Editor, QuickHost lets you ma
 Run the following command to install dependencies, build the frontend, and start QuickHost in the background using `pm2`:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/user/quickhost/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Leopixel1/dev-host/refs/heads/main/install.sh | bash
 ```
 
 *(Note: Replace the URL with your actual repository URL if hosting elsewhere)*
