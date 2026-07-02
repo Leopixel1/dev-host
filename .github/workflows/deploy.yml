@@ -1,0 +1,33 @@
+name: Auto Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm run setup
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Ensure data directory exists
+        run: mkdir -p quickhost/backend/data
+
+      - name: Restart backend with PM2
+        run: |
+          cd quickhost/backend
+          pm2 restart quickhost || pm2 start server.js --name quickhost
+          pm2 save
