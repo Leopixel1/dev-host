@@ -109,6 +109,14 @@ While QuickHost projects are served as static files, you can easily use npm pack
 
 ---
 
+## 🚀 Deployment & CI/CD
+
+QuickHost can be easily deployed to your own server and supports automatic deployments via GitHub Actions.
+
+For detailed instructions on setting up a production environment, wildcard DNS, and CI/CD with a GitHub self-hosted runner, see the **[Deployment Guide](DEPLOYMENT.md)**.
+
+---
+
 ## 🔒 Security Note
 
 QuickHost currently does not have built-in authentication. It is **strongly recommended** to run it behind a reverse proxy (like Nginx, Caddy, or Traefik) and use Basic Auth or an SSO provider to protect the dashboard.
